@@ -36,7 +36,6 @@ this_sheet.write('B4', str(u))
 # solve for number of servers needed (estimate pb)
 c = 0
 pb_est = 1
-moe = 0.01
 series = [c]
 
 while (pb_est > pb):
