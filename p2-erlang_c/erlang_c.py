@@ -54,19 +54,15 @@ while (pw > epsilon or ew_cond > alpha):
     # sum from 0 to c - 1
     for k in series:
         a += float(math.pow(l/u, k) * (1/math.factorial(k)))
-    print("a = ", a)
     #calculate b
     term1 = float(math.pow(l/u, c) * (1/math.factorial(c)))
     rho = float(l/(c*u))
     term2 = float(1.0 - rho)
     b = float(term1 / term2)
-    print("b = ", b)
     # calcualte p0
     p0 = float((math.sqrt(math.pow(a, 2) + 4*b) - a) / 2*b)
-    print("p0 = ", p0)
     # calculate pc
     pc = term1 * p0
-    print("pc = ", 0.359)
     # recalculate pw
     pw = float(pc / term2)
 
