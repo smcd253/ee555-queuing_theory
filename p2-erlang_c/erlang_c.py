@@ -6,7 +6,7 @@
 # should not exceed  where  is an input parameter.
 # b. Given that an arriving packet must wait, the average waiting time should not exceed
 #  minutes where  is an input parameter. Hint: This is conditional expectations.
-# Review EE503)
+# Review_cond EE503)
 # The outputs of your calculator should be the number of servers required to satisfy
 # the above requirements/constraints. In addition, your calculator should enable me to
 # find the following averages: The average number of busy servers and the average
@@ -42,10 +42,10 @@ this_sheet.write('B5', str(alpha))
 # solve for number of servers needed (estimate pb)
 c = 0
 pw = 1.0
-ew = sys.float_info.max 
+ew_cond = sys.float_info.max 
 series = [c]
 
-while (pw > epsilon and ew > alpha):
+while (pw > epsilon or ew_cond > alpha):
     c += 1
 
     # calculate a
@@ -70,8 +70,8 @@ while (pw > epsilon and ew > alpha):
     # recalculate pw
     pw = float(pc / term2)
 
-    # recaculate ew
-    ew = float(pc * rho / math.pow(1.0 - rho, 2)) # note, this should be a conditional expectation
+    # recaculate ew_cond | w > o = ew_cond / pw
+    ew_cond = float(pc * rho / math.pow(1.0 - rho, 2)) / pw 
 
     # append series at end of loop so a is sum from 0 to c - 1
     series.append(c) 
@@ -80,7 +80,7 @@ while (pw > epsilon and ew > alpha):
 
 print("epsilon = ", epsilon)
 print("pw = ", pw)
-print("ew = ", ew)
+print("ew_cond = ", ew_cond)
 print("c = ", c)
 
 # record results
