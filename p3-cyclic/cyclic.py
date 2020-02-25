@@ -2,30 +2,36 @@ import xlsxwriter
 import sys
 import math
 
-N_cli = float(sys.argv[1])
-sep_rate = float(sys.argv[2])
-prep_time = float(sys.argv[3])
+def cyclic(N_cli, ser_rate, prep_time):
+    C = float(N_cli)
+    coef = []
 
-C = float(N_cli)
-coef = []
+    while C >= 0:
+        coef.append(float(C / (prep_time * ser_rate)))
+        C = C - 1
 
-while C >= 0:
-    coef.append(float(C / (prep_time * sep_rate)))
-    C = C - 1
+    _sum = 0
+    for i in range(int(N_cli)):
+        coef[i + 1] *= coef[i]
+        _sum += coef[i]
 
-_sum = 0
-for i in range(int(N_cli)):
-    coef[i + 1] *= coef[i]
-    _sum += coef[i]
+    P_zero = float(1 / (_sum + 1))
 
-P_zero = float(1 / (_sum + 1))
+    P = []
+    EN = 0
+    for i in range(int(N_cli)):
+        P.append(coef[i] * P_zero)
+        EN += P[i] * (i + 1)
+        ET=float(EN / (1 / prep_time))
+    
+    p_busy = 1 - P_zero
+    utilization = 1 / prep_time
+    et = EN / (1 / prep_time)
+    prop_wait = (ET-(1/ser_rate))/ET 
 
-P = []
-EN = 0
-for i in range(int(N_cli)):
-    P.append(coef[i] * P_zero)
-    EN += P[i] * (i + 1)
-
-print("p(busy) = ", 1 - P_zero)
-print("utilization = ", 1 / prep_time)
-print("E(T) = ", EN / (1 / prep_time))
+    d = dict()
+    d['p_busy'] = p_busy
+    d['et'] = ET
+    d['throughput'] = 1 / ET
+    d['prop_wait'] = prop_wait
+    return d
