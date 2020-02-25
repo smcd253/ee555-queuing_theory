@@ -1,9 +1,8 @@
-import xlsxwriter  # write results to excel workbook
+# import xlsxwriter  # write results to excel workbook
 import math  # factorial
 
 
 def two_servers(l, u1, u2):
-
     utilization = -1
     p_idle = -1
 

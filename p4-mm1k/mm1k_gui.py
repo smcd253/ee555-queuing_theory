@@ -1,6 +1,8 @@
 from tkinter import Tk, Label, Button, Entry, IntVar, DoubleVar, END, W, E
 import math         # factorial
 
+from openpyxl import *
+
 # add parent directory to path so we can
 # import main menu
 import sys
@@ -80,6 +82,28 @@ class MM1K:
             
         else: # reset
             self.utilization = 0
+    
+    def write_to_excel(self):
+        f_name = "/Users/SwaggySpencerMcDee/Documents/ee555/mini_project/ee555-queuing_theory/queuing_theory.xlsx"
+        wb = load_workbook(f_name)
+        ws = wb["Part 4"]
+        data = [
+            ["Inputs", "Values", "Results", "Values"],
+            ["Capacity", str(self.capacity),"Utilization", str(self.utilization)],
+            ["Arrival Rate", str(self.l), "E(N)", str(self.en)],
+            ["Service Rate", str(self.u)]
+        ]
+        i = 1
+        for v in data:
+            j = 1
+            for e in v:
+                c = ws.cell(row = i, column = j)
+                c.value = e
+                j += 1
+            i += 1
+
+        wb.save(f_name)
+        
 def main():
     mm1k_menu = MM1K()
     mm1k_menu.root.mainloop()

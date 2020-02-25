@@ -1,6 +1,8 @@
 from tkinter import Tk, Label, Button, Entry, IntVar, DoubleVar, END, W, E
 import math         # factorial
 
+from openpyxl import *
+
 # add parent directory to path so we can
 # import main menu
 import sys
@@ -71,7 +73,9 @@ class TwoServers:
             self.p_idle = result['p_idle']
             self.utilization_result.set(self.utilization)
             self.p_idle_result.set(self.p_idle)
-
+            
+            self.write_to_excel()
+            
         elif method == "main-menu":
             self.root.destroy()
             from main_menu import MainMenu
@@ -80,6 +84,28 @@ class TwoServers:
             
         else: # reset
             self.utilization = 0
+
+    def write_to_excel(self):
+        f_name = "/Users/SwaggySpencerMcDee/Documents/ee555/mini_project/ee555-queuing_theory/queuing_theory.xlsx"
+        wb = load_workbook(f_name)
+        ws = wb["Part 5"]
+        data = [
+            ["Inputs", "Values", "Results", "Values"],
+            ["Arrival Rate", str(self.l),"Utilization", str(self.utilization)],
+            ["Server1 Rate", str(self.u1), "P(idle)", str(self.p_idle)],
+            ["Server2 Rate", str(self.u2)]
+        ]
+        i = 1
+        for v in data:
+            j = 1
+            for e in v:
+                c = ws.cell(row = i, column = j)
+                c.value = e
+                j += 1
+            i += 1
+
+        wb.save(f_name)
+
 def main():
     two_servers_menu = TwoServers()
     two_servers_menu.root.mainloop()
