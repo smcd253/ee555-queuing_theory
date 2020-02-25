@@ -4,9 +4,9 @@ import math         # factorial
 from erlang_b_new import erlang_b
 class ErlangB:
 
-    def __init__(self, master):
-        self.master = master
-        master.title("P1: Erlang-B Calculator")
+    def __init__(self):
+        self.root = Tk()
+        self.root.title("P1: Erlang-B Calculator")
 
         # member variables
         self.num_servers = 0    # result: number of servers
@@ -16,17 +16,18 @@ class ErlangB:
         self.u = 0.0            # input: mu
 
         # text fields and validation for each variable
-        self.pb_entry = Entry(master)
-        self.l_entry = Entry(master)
-        self.u_entry = Entry(master)
+        self.pb_entry = Entry(self.root)
+        self.l_entry = Entry(self.root)
+        self.u_entry = Entry(self.root)
 
         # text field labels
-        self.pb_label = Label(master, text="Desired Probability of Blocking: ")
-        self.l_label = Label(master, text="Desired Arrival Rate (lambda): ")
-        self.u_label = Label(master, text="Desired Service Rate (lambda): ")
+        self.pb_label = Label(self.root, text="Desired Probability of Blocking: ")
+        self.l_label = Label(self.root, text="Desired Arrival Rate (lambda): ")
+        self.u_label = Label(self.root, text="Desired Service Rate (lambda): ")
 
         # calcualte button
-        self.calculate_button = Button(master, text="Calculate", command=lambda: self.update("calculate"))
+        self.calculate_button = Button(self.root, text="Calculate", command=lambda: self.update("calculate"))
+        self.main_menu_button = Button(self.root, text="Main Menu", command=lambda: self.update("main-menu"))
 
         # initialize result text field
         self.num_servers_result = IntVar()
@@ -35,10 +36,10 @@ class ErlangB:
         self.pb_actual_result.set(self.pb_actual)
 
         # result text field labels
-        self.num_servers_text_label = Label(master, text="Number of Servers Required:")
-        self.num_servers_result_label = Label(master, textvariable=self.num_servers_result)
-        self.pb_actual_text_label = Label(master, text="Actual Probability of Blocking:")
-        self.pb_actual_result_label = Label(master, textvariable=self.pb_actual_result)
+        self.num_servers_text_label = Label(self.root, text="Number of Servers Required:")
+        self.num_servers_result_label = Label(self.root, textvariable=self.num_servers_result)
+        self.pb_actual_text_label = Label(self.root, text="Actual Probability of Blocking:")
+        self.pb_actual_result_label = Label(self.root, textvariable=self.pb_actual_result)
 
         # Calculator Layout
         self.pb_label.grid(row=0, column=0, columnspan=3, sticky=W)
@@ -52,10 +53,10 @@ class ErlangB:
         self.num_servers_result_label.grid(row=4, column=3, columnspan=2, sticky=E)
         self.pb_actual_text_label.grid(row=5, column=0, sticky=W)
         self.pb_actual_result_label.grid(row=5, column=3, columnspan=2, sticky=E)
-
+        self.main_menu_button.grid(row=6, column=0)
+        
     def update(self, method):
         if method == "calculate":
-
             self.pb = float(self.pb_entry.get())
             self.l = float(self.l_entry.get())
             self.u = float(self.u_entry.get())
@@ -63,13 +64,20 @@ class ErlangB:
             result = erlang_b(self.pb, self.l, self.u)
             self.num_servers = result['c']
             self.pb_actual = result['pb_actual']
+            self.num_servers_result.set(self.num_servers)
+            self.pb_actual_result.set(self.pb_actual)
 
+        elif method == "main-menu":
+            self.root.destroy()
+            from main_menu import MainMenu
+            m_menu = MainMenu()
+            m_menu.root.mainloop()
+            
         else: # reset
             self.num_servers = 0
+def main():
+    erlang_menu = ErlangB()
+    erlang_menu.root.mainloop()
 
-        self.num_servers_result.set(self.num_servers)
-        self.pb_actual_result.set(self.pb_actual)
-
-root = Tk()
-my_gui = ErlangB(root)
-root.mainloop()
+if __name__ == '__main__':
+    main()
