@@ -3,7 +3,7 @@ import sys
 import math
 
 def cyclic(N_cli, ser_rate, prep_time):
-     # open workbook to write input data
+    # open workbook to write input data
     workbook = xlsxwriter.Workbook('../queuing_theory.xlsx')
     this_sheet = workbook.add_worksheet('Part 3')
 
