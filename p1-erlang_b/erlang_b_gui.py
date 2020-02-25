@@ -6,7 +6,7 @@ import math         # factorial
 import sys
 sys.path.insert(1, '..') 
 
-from erlang_b_new import erlang_b
+from erlang_b import erlang_b
 class ErlangB:
 
     def __init__(self):
@@ -28,7 +28,7 @@ class ErlangB:
         # text field labels
         self.pb_label = Label(self.root, text="Desired Probability of Blocking: ")
         self.l_label = Label(self.root, text="Desired Arrival Rate (lambda): ")
-        self.u_label = Label(self.root, text="Desired Service Rate (lambda): ")
+        self.u_label = Label(self.root, text="Desired Service Rate (mu): ")
 
         # calcualte button
         self.calculate_button = Button(self.root, text="Calculate", command=lambda: self.update("calculate"))
