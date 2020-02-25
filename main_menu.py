@@ -14,9 +14,12 @@ sys.path.insert(1, 'p5-two_servers/')
 import xlsxwriter
 class MainMenu:
 
-    def __init__(self):
+    def __init__(self, f_path):
         self.root = Tk()
         self.root.title("EE555 Mini Project - Main Menu")
+
+        # excel path
+        self.f_path = f_path
 
         # menu option buttons
         self.erlang_b = Button(self.root, text="Erlang-B", command=lambda: self.update("Erlang-B"))
@@ -36,35 +39,36 @@ class MainMenu:
         if method == "Erlang-B":
             self.root.destroy()
             from erlang_b_gui import ErlangB
-            erlang_menu = ErlangB()
+            erlang_menu = ErlangB(self.f_path)
             erlang_menu.root.mainloop()
 
         elif method == "Erlang-C":
             self.root.destroy()
             from erlang_c_gui import ErlangC
-            erlang_c_menu = ErlangC()
+            erlang_c_menu = ErlangC(self.f_path)
             erlang_c_menu.root.mainloop()
 
         elif method == "Cyclic":
             self.root.destroy()
             from cyclic_gui import Cyclic
-            cyclic_menu = Cyclic()
+            cyclic_menu = Cyclic(self.f_path)
             cyclic_menu.root.mainloop()
 
         elif method == "MM1K":
             self.root.destroy()
             from mm1k_gui import MM1K
-            mm1k_menu = MM1K()
+            mm1k_menu = MM1K(self.f_path)
             mm1k_menu.root.mainloop()
 
         elif method == "TwoServers":
             self.root.destroy()
             from two_servers_gui import TwoServers
-            two_servers_menu = TwoServers()
+            two_servers_menu = TwoServers(self.f_path)
             two_servers_menu.root.mainloop()
 
 def main():
-    m_menu = MainMenu()
+    excel_path = sys.argv[1]
+    m_menu = MainMenu(excel_path)
     m_menu.root.mainloop()
 
 if __name__ == '__main__':

@@ -21,23 +21,6 @@ def erlang_c(l, u, epsilon, alpha):
     es = -1
     en = -1
     if(epsilon > 0 and epsilon <= 1 and alpha > 0 and l > 0 and u > 0 and l < u):
-        # open workbook to write input data
-        workbook = xlsxwriter.Workbook('/Users/SwaggySpencerMcDee/Documents/ee555/mini_project/ee555-queuing_theory/queuing_theory.xlsx')
-        this_sheet = workbook.add_worksheet('Part 2')
-
-        # write input data to worksheet
-        this_sheet.write('A1', "Inputs")
-        this_sheet.write('A2', "Arrival Rate")
-        this_sheet.write('A3', "Service Rate")
-        this_sheet.write('A4', "P(W > 0) Less Than")
-        this_sheet.write('A5', "E(W) Less Than")
-
-        this_sheet.write('B1', "Values")
-        this_sheet.write('B2', str(l))
-        this_sheet.write('B3', str(u))
-        this_sheet.write('B4', str(epsilon))
-        this_sheet.write('B5', str(alpha))
-
         # solve for number of servers needed (estimate pb)
         c = 0
         pw = 1.0
@@ -73,18 +56,6 @@ def erlang_c(l, u, epsilon, alpha):
             
         en = float(rho / (1 - rho))
         es = float(rho/l)
-
-        # record results
-        this_sheet.write('A6', "Results")
-        this_sheet.write('A7', "Number of Servers")
-        this_sheet.write('B7', str(c))
-        this_sheet.write('A8', "E(S)")
-        this_sheet.write('B8', str(es))
-        this_sheet.write('A9', "E(N)")
-        this_sheet.write('B9', str(en))
-
-        # close workbook
-        workbook.close()
 
     d = dict()
     d['c'] = c

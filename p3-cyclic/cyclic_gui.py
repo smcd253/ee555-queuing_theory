@@ -12,9 +12,12 @@ from cyclic import cyclic
 
 class Cyclic:
 
-    def __init__(self):
+    def __init__(self, f_path):
         self.root = Tk()
         self.root.title("P3: Cyclic Queuing Systems")
+
+        # excel file path
+        self.f_path = f_path
 
         # member variables
         self.p_busy = 0         # result: probability system is busy
@@ -93,24 +96,26 @@ class Cyclic:
             self.throughput_result.set(self.throughput)
             self.prop_wait_result.set(self.prop_wait)
 
+            self.write_to_excel()
+            
         elif method == "main-menu":
             self.root.destroy()
             from main_menu import MainMenu
-            m_menu = MainMenu()
+            m_menu = MainMenu(self.f_path)
             m_menu.root.mainloop()
             
         else: # reset
             self.p_busy = 0
     
     def write_to_excel(self):
-        f_name = "/Users/SwaggySpencerMcDee/Documents/ee555/mini_project/ee555-queuing_theory/queuing_theory.xlsx"
-        wb = load_workbook(f_name)
-        ws = wb["Part 4"]
+        wb = load_workbook(self.f_path)
+        ws = wb["Part 3"]
         data = [
             ["Inputs", "Values", "Results", "Values"],
-            ["Capacity", str(self.capacity),"Utilization", str(self.utilization)],
-            ["Arrival Rate", str(self.l), "E(N)", str(self.en)],
-            ["Service Rate", str(self.u)]
+            ["Prep Time", str(self.alpha),"P(busy)", str(self.p_busy)],
+            ["Number of Servers", str(self.n), "E(T)", str(self.et)],
+            ["Service Rate", str(self.u),"Throughput", str(self.throughput)],
+            ["","","Proportion Waiting", str(self.prop_wait)]
         ]
         i = 1
         for v in data:
@@ -121,10 +126,11 @@ class Cyclic:
                 j += 1
             i += 1
 
-        wb.save(f_name)
+        wb.save(self.f_path)
         
 def main():
-    cyclic_menu = Cyclic()
+    excel_path = sys.argv[1]
+    cyclic_menu = Cyclic(excel_path)
     cyclic_menu.root.mainloop()
 
 if __name__ == '__main__':

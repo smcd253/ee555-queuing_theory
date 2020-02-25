@@ -1,6 +1,8 @@
 from tkinter import Tk, Label, Button, Entry, IntVar, DoubleVar, END, W, E
 import math         # factorial
 
+from openpyxl import *
+
 # add parent directory to path so we can
 # import main menu
 import sys
@@ -9,9 +11,12 @@ sys.path.insert(1, '..')
 from erlang_b import erlang_b
 class ErlangB:
 
-    def __init__(self):
+    def __init__(self, f_path):
         self.root = Tk()
         self.root.title("P1: Erlang-B Calculator")
+
+        # excel file path
+        self.f_path = f_path
 
         # member variables
         self.num_servers = 0    # result: number of servers
@@ -72,16 +77,40 @@ class ErlangB:
             self.num_servers_result.set(self.num_servers)
             self.pb_actual_result.set(self.pb_actual)
 
+            self.write_to_excel()
+
         elif method == "main-menu":
             self.root.destroy()
             from main_menu import MainMenu
-            m_menu = MainMenu()
+            m_menu = MainMenu(self.f_path)
             m_menu.root.mainloop()
             
         else: # reset
             self.num_servers = 0
+    
+    def write_to_excel(self):
+        wb = load_workbook(self.f_path)
+        ws = wb["Part 1"]
+        data = [
+            ["Inputs", "Values", "Results", "Values"],
+            ["Max P(blocking)", str(self.pb),"Number of Servers", str(self.num_servers)],
+            ["Arrival Rate", str(self.l), "P(blocking)", str(self.pb_actual)],
+            ["Service Rate", str(self.u),"", ""]
+        ]
+        i = 1
+        for v in data:
+            j = 1
+            for e in v:
+                c = ws.cell(row = i, column = j)
+                c.value = e
+                j += 1
+            i += 1
+
+        wb.save(self.f_path)
+
 def main():
-    erlang_menu = ErlangB()
+    excel_path = sys.argv[1]
+    erlang_menu = ErlangB(excel_path)
     erlang_menu.root.mainloop()
 
 if __name__ == '__main__':

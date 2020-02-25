@@ -11,9 +11,12 @@ sys.path.insert(1, '..')
 from mm1k import mm1k
 class MM1K:
 
-    def __init__(self):
+    def __init__(self, f_path):
         self.root = Tk()
         self.root.title("P4: MM1K")
+        
+        # excel file path
+        self.f_path = f_path
 
         # member variables
         self.utilization = 0    # result: system utilization
@@ -74,18 +77,19 @@ class MM1K:
             self.utilization_result.set(self.utilization)
             self.en_result.set(self.en)
 
+            self.write_to_excel()
+            
         elif method == "main-menu":
             self.root.destroy()
             from main_menu import MainMenu
-            m_menu = MainMenu()
+            m_menu = MainMenu(self.f_path)
             m_menu.root.mainloop()
             
         else: # reset
             self.utilization = 0
     
     def write_to_excel(self):
-        f_name = "/Users/SwaggySpencerMcDee/Documents/ee555/mini_project/ee555-queuing_theory/queuing_theory.xlsx"
-        wb = load_workbook(f_name)
+        wb = load_workbook(self.f_path)
         ws = wb["Part 4"]
         data = [
             ["Inputs", "Values", "Results", "Values"],
@@ -102,10 +106,11 @@ class MM1K:
                 j += 1
             i += 1
 
-        wb.save(f_name)
+        wb.save(self.f_path)
         
 def main():
-    mm1k_menu = MM1K()
+    excel_path = sys.argv[1]
+    mm1k_menu = MM1K(excel_path)
     mm1k_menu.root.mainloop()
 
 if __name__ == '__main__':
