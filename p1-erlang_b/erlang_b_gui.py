@@ -1,6 +1,11 @@
 from tkinter import Tk, Label, Button, Entry, IntVar, DoubleVar, END, W, E
 import math         # factorial
 
+# add parent directory to path so we can
+# import main menu
+import sys
+sys.path.insert(1, '..') 
+
 from erlang_b_new import erlang_b
 class ErlangB:
 
