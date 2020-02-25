@@ -6,9 +6,9 @@ import math         # factorial
 import sys
 sys.path.insert(1, '..') 
 
-from erlang_c import erlang_c
+from cyclic import cyclic
 
-class ErlangC:
+class Cyclic:
 
     def __init__(self):
         self.root = Tk()
@@ -18,12 +18,13 @@ class ErlangC:
         self.p_busy = 0         # result: probability system is busy
         self.et = 0.0           # result: expected time for packet to stay in system
         self.throughput = 0.0   # result: system throughput
+        self.prop_wait = 0.0    # result: proportion of time spent waiting
         self.alpha = 0.0        # input: prep time
         self.n = 0.0            # input: number of servers
         self.u = 0.0            # input: mu
 
         # text fields and validation for each variable
-        self.alpha = Entry(self.root)
+        self.alpha_entry = Entry(self.root)
         self.n_entry = Entry(self.root)
         self.u_entry = Entry(self.root)
 
@@ -41,49 +42,54 @@ class ErlangC:
         self.p_busy_result.set(self.p_busy)
         self.et_result = DoubleVar()
         self.et_result.set(self.et)
-        self.en_result = DoubleVar()
-        self.en_result.set(self.throughput)
+        self.throughput_result = DoubleVar()
+        self.throughput_result.set(self.throughput)
+        self.prop_wait_result = DoubleVar()
+        self.prop_wait_result.set(self.prop_wait)
 
         # result text field labels
-        self.num_servers_text_label = Label(self.root, text="Number of Servers Required:")
-        self.num_servers_result_label = Label(self.root, textvariable=self.p_busy_result)
-        self.es_text_label = Label(self.root, text="Expected Waiting Time:")
-        self.es_result_label = Label(self.root, textvariable=self.et_result)
-        self.en_text_label = Label(self.root, text="Expected Number Packets in System:")
-        self.en_result_label = Label(self.root, textvariable=self.et_result)
+        self.p_busy_text_label = Label(self.root, text="Number of Servers Required:")
+        self.p_busy_result_label = Label(self.root, textvariable=self.p_busy_result)
+        self.et_text_label = Label(self.root, text="Expected Waiting Time:")
+        self.et_result_label = Label(self.root, textvariable=self.et_result)
+        self.prop_wait_text_label = Label(self.root, text="Proportion of Time Spent Waiting:")
+        self.prop_wait_result_label = Label(self.root, textvariable=self.prop_wait_result)
+        self.throughput_text_label = Label(self.root, text="System Throughput:")
+        self.throughput_result_label = Label(self.root, textvariable=self.throughput_result)
 
         # Calculator Layout
-        self.epsilon_label.grid(row=0, column=0, columnspan=3, sticky=W)
-        self.epsilon.grid(row=0, column=4, columnspan=1, sticky=E)
-        self.alpha_label.grid(row=1, column=0, columnspan=3, sticky=W)
-        self.alpha.grid(row=1, column=4, columnspan=1, sticky=E)
-        self.n_label.grid(row=2, column=0, columnspan=3, sticky=W)
-        self.n_entry.grid(row=2, column=4, columnspan=1, sticky=E)
-        self.u_label.grid(row=3, column=0, columnspan=3, sticky=W)
-        self.u_entry.grid(row=3, column=4, columnspan=1, sticky=E)
-        self.calculate_button.grid(row=4, column=0)
-        self.num_servers_text_label.grid(row=5, column=0, sticky=W)
-        self.num_servers_result_label.grid(row=5, column=3, columnspan=2, sticky=E)
-        self.es_text_label.grid(row=6, column=0, sticky=W)
-        self.es_result_label.grid(row=6, column=3, columnspan=2, sticky=E)
-        self.en_text_label.grid(row=7, column=0, sticky=W)
-        self.en_result_label.grid(row=7, column=3, columnspan=2, sticky=E)
+        self.alpha_label.grid(row=0, column=0, columnspan=3, sticky=W)
+        self.alpha_entry.grid(row=0, column=4, columnspan=1, sticky=E)
+        self.n_label.grid(row=1, column=0, columnspan=3, sticky=W)
+        self.n_entry.grid(row=1, column=4, columnspan=1, sticky=E)
+        self.u_label.grid(row=2, column=0, columnspan=3, sticky=W)
+        self.u_entry.grid(row=2, column=4, columnspan=1, sticky=E)
+        self.calculate_button.grid(row=3, column=0)
+        self.p_busy_text_label.grid(row=4, column=0, sticky=W)
+        self.p_busy_result_label.grid(row=4, column=3, columnspan=2, sticky=E)
+        self.et_text_label.grid(row=5, column=0, sticky=W)
+        self.et_result_label.grid(row=5, column=3, columnspan=2, sticky=E)
+        self.prop_wait_text_label.grid(row=6, column=0, sticky=W)
+        self.prop_wait_result_label.grid(row=6, column=3, columnspan=2, sticky=E)
+        self.throughput_text_label.grid(row=7, column=0, sticky=W)
+        self.throughput_result_label.grid(row=7, column=3, columnspan=2, sticky=E)
         self.main_menu_button.grid(row=8, column=0)
         
     def update(self, method):
         if method == "calculate":
-            self.epsilon = float(self.epsilon.get())
-            self.alpha = float(self.alpha.get())
+            self.alpha = float(self.alpha_entry.get())
             self.n = float(self.n_entry.get())
             self.u = float(self.u_entry.get())
 
-            result = erlang_c(self.n, self.u, self.epsilon, self.alpha)
-            self.p_busy = result['c']
+            result = cyclic(self.n, self.u, self.alpha)
+            self.p_busy = result['p_busy']
             self.et = result['et']
-            self.throughput = result['et']
+            self.throughput = result['throughput']
+            self.prop_wait = result['prop_wait']
             self.p_busy_result.set(self.p_busy)
             self.et_result.set(self.et)
-            self.en_result.set(self.throughput)
+            self.throughput_result.set(self.throughput)
+            self.prop_wait_result.set(self.prop_wait)
 
         elif method == "main-menu":
             self.root.destroy()
@@ -94,8 +100,8 @@ class ErlangC:
         else: # reset
             self.p_busy = 0
 def main():
-    erlang_c_menu = ErlangC()
-    erlang_c_menu.root.mainloop()
+    cyclic_menu = Cyclic()
+    cyclic_menu.root.mainloop()
 
 if __name__ == '__main__':
     main()
