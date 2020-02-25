@@ -21,5 +21,3 @@ def two_servers(l, u1, u2):
     d['utilization'] = utilization
     d['p_idle'] = p_idle
     return d
-
-    

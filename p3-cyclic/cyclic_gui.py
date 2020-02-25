@@ -48,7 +48,7 @@ class Cyclic:
         self.prop_wait_result.set(self.prop_wait)
 
         # result text field labels
-        self.p_busy_text_label = Label(self.root, text="Number of Servers Required:")
+        self.p_busy_text_label = Label(self.root, text="Probability System is Busy:")
         self.p_busy_result_label = Label(self.root, textvariable=self.p_busy_result)
         self.et_text_label = Label(self.root, text="Expected Waiting Time:")
         self.et_result_label = Label(self.root, textvariable=self.et_result)

@@ -1,9 +1,7 @@
 # ee555-queuing_theory
 EE555 Broadband Network Architecture - Mini Project: Various probabilistic queuing model problems 
 
-## Compilation Instructions
-
-### Installation
+## Installation
 ```bash
 # install python3.7
 sudo apt-get install python3.7
@@ -19,9 +17,12 @@ pip3 --version
 
 # install xlsxwriter
 pip3 install XlsxWriter
+
+# download and install tkinter
+https://www.activestate.com/products/tcl/downloads/
 ```
 
-### P1 - Erlang B Calculator (M/M/C/C)
+## Compilation Instructions
 ```bash
-python3 erlang_b.py
+python3 main_menu.py
 ```
