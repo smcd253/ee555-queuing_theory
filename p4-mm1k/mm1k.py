@@ -1,6 +1,4 @@
 import xlsxwriter
-import sys
-import math
 
 def mm1k(_lambda, capacity, mu):
     # open workbook to write input data

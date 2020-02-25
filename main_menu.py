@@ -8,6 +8,7 @@ sys.path.insert(1, 'p1-erlang_b/')
 sys.path.insert(1, 'p2-erlang_c/') 
 sys.path.insert(1, 'p3-cyclic/') 
 sys.path.insert(1, 'p4-mm1k/') 
+sys.path.insert(1, 'p5-two_servers/') 
 
 
 class MainMenu:
@@ -21,12 +22,14 @@ class MainMenu:
         self.erlang_c = Button(self.root, text="Erlang-C", command=lambda: self.update("Erlang-C"))
         self.cylcic = Button(self.root, text="Cyclic", command=lambda: self.update("Cyclic"))
         self.mm1k = Button(self.root, text="MM1K", command=lambda: self.update("MM1K"))
+        self.two_servers = Button(self.root, text="Two Servers", command=lambda: self.update("TwoServers"))
 
         # menu Layout
         self.erlang_b.grid(row=3, column=0)
         self.erlang_c.grid(row=3, column=1)
         self.cylcic.grid(row=3, column=2)
         self.mm1k.grid(row=3, column=4)
+        self.two_servers.grid(row=3, column=5)
 
     def update(self, method):
         if method == "Erlang-B":
@@ -52,6 +55,12 @@ class MainMenu:
             from mm1k_gui import MM1K
             mm1k_menu = MM1K()
             mm1k_menu.root.mainloop()
+
+        elif method == "TwoServers":
+            self.root.destroy()
+            from two_servers_gui import TwoServers
+            two_servers_menu = TwoServers()
+            two_servers_menu.root.mainloop()
 
 def main():
     m_menu = MainMenu()
