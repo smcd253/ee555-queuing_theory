@@ -38,3 +38,15 @@ cd p1-erlang_b
 python3 erlang_b_gui.py
 ```
 
+## To Run Executable (for Windows only)
+To compile the executable:
+```bash
+pip3 install pyinstaller
+pyinstaller --onefile main_menu.py
+```
+
+To run the executable:
+```bash
+dist/main_menu.exe <current_directory>/queuing_theory.xlsx
+```
+

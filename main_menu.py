@@ -4,11 +4,11 @@ import math         # factorial
 # add children directories to path so we can
 # import main menu
 import sys
-sys.path.insert(1, 'p1-erlang_b/') 
-sys.path.insert(1, 'p2-erlang_c/') 
-sys.path.insert(1, 'p3-cyclic/') 
-sys.path.insert(1, 'p4-mm1k/') 
-sys.path.insert(1, 'p5-two_servers/') 
+sys.path.insert(1, 'src/p1-erlang_b/') 
+sys.path.insert(1, 'src/p2-erlang_c/') 
+sys.path.insert(1, 'src/p3-cyclic/') 
+sys.path.insert(1, 'src/p4-mm1k/') 
+sys.path.insert(1, 'src/p5-two_servers/') 
 
 class MainMenu:
 

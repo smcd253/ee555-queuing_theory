@@ -6,34 +6,34 @@ from openpyxl import *
 # add parent directory to path so we can
 # import main menu
 import sys
-sys.path.insert(1, '..') 
+sys.path.insert(1, '../..') 
 
-from mm1k import mm1k
-class MM1K:
+from two_servers import two_servers
+class TwoServers:
 
     def __init__(self, f_path):
         self.root = Tk()
-        self.root.title("P4: MM1K")
+        self.root.title("P5: Two Servers")
         
         # excel file path
         self.f_path = f_path
 
         # member variables
         self.utilization = 0    # result: system utilization
-        self.en = 0.0           # result: expected number of packets in system
-        self.capacity = 0.0     # input: desired capacity of the system
-        self.l = 0.0            # input: lambda
-        self.u = 0.0            # input: mu
+        self.p_idle = 0.0       # result: probability that system is idle
+        self.l = 0.0            # input: arrival rate
+        self.u1 = 0.0           # input: service rate of server1
+        self.u2 = 0.0           # input: service rate of server2
 
         # text fields and validation for each variable
-        self.capacity_entry = Entry(self.root)
         self.l_entry = Entry(self.root)
-        self.u_entry = Entry(self.root)
+        self.u1_entry = Entry(self.root)
+        self.u2_entry = Entry(self.root)
 
         # text field labels
-        self.capacity_label = Label(self.root, text="Desired System Capacity: ")
         self.l_label = Label(self.root, text="Desired Arrival Rate (lambda): ")
-        self.u_label = Label(self.root, text="Desired Service Rate (mu): ")
+        self.u1_label = Label(self.root, text="Desired Service Rate for Server 1 (mu1): ")
+        self.u2_label = Label(self.root, text="Desired Service Rate for Server 2 (mu2): ")
 
         # calcualte button
         self.calculate_button = Button(self.root, text="Calculate", command=lambda: self.update("calculate"))
@@ -42,41 +42,41 @@ class MM1K:
         # initialize result text field
         self.utilization_result = IntVar()
         self.utilization_result.set(self.utilization)
-        self.en_result = DoubleVar()
-        self.en_result.set(self.en)
+        self.p_idle_result = DoubleVar()
+        self.p_idle_result.set(self.p_idle)
 
         # result text field labels
         self.utilization_text_label = Label(self.root, text="System Utilization:")
         self.utilization_restul_label = Label(self.root, textvariable=self.utilization_result)
-        self.en_result_text_label = Label(self.root, text="Expected Number of Packets in System:")
-        self.en_result.label = Label(self.root, textvariable=self.en_result)
+        self.p_idle_result_text_label = Label(self.root, text="Probability that System is Idle:")
+        self.p_idle_result.label = Label(self.root, textvariable=self.p_idle_result)
 
         # Calculator Layout
-        self.capacity_label.grid(row=0, column=0, columnspan=3, sticky=W)
-        self.capacity_entry.grid(row=0, column=4, columnspan=1, sticky=E)
-        self.l_label.grid(row=1, column=0, columnspan=3, sticky=W)
-        self.l_entry.grid(row=1, column=4, columnspan=1, sticky=E)
-        self.u_label.grid(row=2, column=0, columnspan=3, sticky=W)
-        self.u_entry.grid(row=2, column=4, columnspan=1, sticky=E)
+        self.l_label.grid(row=0, column=0, columnspan=3, sticky=W)
+        self.l_entry.grid(row=0, column=4, columnspan=1, sticky=E)
+        self.u1_label.grid(row=1, column=0, columnspan=3, sticky=W)
+        self.u1_entry.grid(row=1, column=4, columnspan=1, sticky=E)
+        self.u2_label.grid(row=2, column=0, columnspan=3, sticky=W)
+        self.u2_entry.grid(row=2, column=4, columnspan=1, sticky=E)
         self.calculate_button.grid(row=3, column=0)
         self.utilization_text_label.grid(row=4, column=0, sticky=W)
         self.utilization_restul_label.grid(row=4, column=3, columnspan=2, sticky=E)
-        self.en_result_text_label.grid(row=5, column=0, sticky=W)
-        self.en_result.label.grid(row=5, column=3, columnspan=2, sticky=E)
+        self.p_idle_result_text_label.grid(row=5, column=0, sticky=W)
+        self.p_idle_result.label.grid(row=5, column=3, columnspan=2, sticky=E)
         self.main_menu_button.grid(row=6, column=0)
         
     def update(self, method):
         if method == "calculate":
-            self.capacity = float(self.capacity_entry.get())
+            self.u2 = float(self.u2_entry.get())
             self.l = float(self.l_entry.get())
-            self.u = float(self.u_entry.get())
+            self.u1 = float(self.u1_entry.get())
 
-            result = mm1k(self.l, self.capacity, self.u)
+            result = two_servers(self.l, self.u1, self.u2)
             self.utilization = result['utilization']
-            self.en = result['en']
+            self.p_idle = result['p_idle']
             self.utilization_result.set(self.utilization)
-            self.en_result.set(self.en)
-
+            self.p_idle_result.set(self.p_idle)
+            
             self.write_to_excel()
             
         elif method == "main-menu":
@@ -87,15 +87,15 @@ class MM1K:
             
         else: # reset
             self.utilization = 0
-    
+
     def write_to_excel(self):
         wb = load_workbook(self.f_path)
-        ws = wb["Part 4"]
+        ws = wb["Part 5"]
         data = [
             ["Inputs", "Values", "Results", "Values"],
-            ["Capacity", str(self.capacity),"Utilization", str(self.utilization)],
-            ["Arrival Rate", str(self.l), "E(N)", str(self.en)],
-            ["Service Rate", str(self.u)]
+            ["Arrival Rate", str(self.l),"Utilization", str(self.utilization)],
+            ["Server1 Rate", str(self.u1), "P(idle)", str(self.p_idle)],
+            ["Server2 Rate", str(self.u2)]
         ]
         i = 1
         for v in data:
@@ -107,11 +107,11 @@ class MM1K:
             i += 1
 
         wb.save(self.f_path)
-        
+
 def main():
     excel_path = sys.argv[1]
-    mm1k_menu = MM1K(excel_path)
-    mm1k_menu.root.mainloop()
+    two_servers_menu = TwoServers(excel_path)
+    two_servers_menu.root.mainloop()
 
 if __name__ == '__main__':
     main()

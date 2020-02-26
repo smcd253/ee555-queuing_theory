@@ -6,7 +6,7 @@ from openpyxl import *
 # add parent directory to path so we can
 # import main menu
 import sys
-sys.path.insert(1, '..') 
+sys.path.insert(1, '../..') 
 
 from erlang_c import erlang_c
 
