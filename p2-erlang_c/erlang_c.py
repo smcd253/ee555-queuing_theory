@@ -12,7 +12,6 @@
 # find the following averages: The average number of busy servers and the average
 # number of packets in the system (both waiting and being served
 
-import xlsxwriter   # write results to excel workbook
 import sys
 import math         # factorial
 

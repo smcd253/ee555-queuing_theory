@@ -1,4 +1,3 @@
-import xlsxwriter   # write results to excel workbook
 import math         # factorial
 
 def erlang_b(pb, l, u):

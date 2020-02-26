@@ -1,4 +1,3 @@
-import xlsxwriter
 import sys
 import math
 

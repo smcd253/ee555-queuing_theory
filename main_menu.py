@@ -10,8 +10,6 @@ sys.path.insert(1, 'p3-cyclic/')
 sys.path.insert(1, 'p4-mm1k/') 
 sys.path.insert(1, 'p5-two_servers/') 
 
-# excel writer
-import xlsxwriter
 class MainMenu:
 
     def __init__(self, f_path):
