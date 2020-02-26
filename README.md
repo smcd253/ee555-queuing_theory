@@ -1,6 +1,10 @@
 # ee555-queuing_theory
 EE555 Broadband Network Architecture - Mini Project: Various probabilistic queuing model problems 
 
+Created by:
+Guozhou Wu and Spencer McDonough
+02/25/2020
+
 ## Installation
 ```bash
 # install python3.7
