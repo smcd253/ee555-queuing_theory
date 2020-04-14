@@ -3,7 +3,7 @@ import math         # factorial
 def erlang_b(pb, l, u):
     pb_est = -1
     c = -1
-    if(pb > 0 and pb <= 1 and l > 0 and u > 0 and l < u):
+    if(pb > 0 and pb <= 1 and l > 0 and u > 0):
         # solve for number of servers needed (estimate pb)
         c = 0
         pb_est = 1

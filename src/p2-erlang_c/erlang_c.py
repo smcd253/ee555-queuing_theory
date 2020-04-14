@@ -19,7 +19,7 @@ def erlang_c(l, u, epsilon, alpha):
     c = -1
     es = -1
     en = -1
-    if(epsilon > 0 and epsilon <= 1 and alpha > 0 and l > 0 and u > 0 and l < u):
+    if(epsilon > 0 and epsilon <= 1 and alpha > 0 and l > 0 and u > 0):
         # solve for number of servers needed (estimate pb)
         c = 0
         pw = 1.0
@@ -41,7 +41,7 @@ def erlang_c(l, u, epsilon, alpha):
             term2 = float(1.0 - rho)
             b = float(term1 / term2)
             # calcualte p0
-            p0 = float((math.sqrt(math.pow(a, 2) + 4*b) - a) / 2*b)
+            p0 = float((math.sqrt(abs(math.pow(a, 2) + 4*b) - a)) / 2*b)
             # calculate pc
             pc = term1 * p0
             # recalculate pw

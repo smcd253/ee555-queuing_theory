@@ -29,8 +29,8 @@ class ErlangC:
         self.u = 0.0            # input: mu
 
         # text fields and validation for each variable
-        self.epsilon = Entry(self.root)
-        self.alpha = Entry(self.root)
+        self.epsilon_entry = Entry(self.root)
+        self.alpha_entry = Entry(self.root)
         self.l_entry = Entry(self.root)
         self.u_entry = Entry(self.root)
 
@@ -62,9 +62,9 @@ class ErlangC:
 
         # Calculator Layout
         self.epsilon_label.grid(row=0, column=0, columnspan=3, sticky=W)
-        self.epsilon.grid(row=0, column=4, columnspan=1, sticky=E)
+        self.epsilon_entry.grid(row=0, column=4, columnspan=1, sticky=E)
         self.alpha_label.grid(row=1, column=0, columnspan=3, sticky=W)
-        self.alpha.grid(row=1, column=4, columnspan=1, sticky=E)
+        self.alpha_entry.grid(row=1, column=4, columnspan=1, sticky=E)
         self.l_label.grid(row=2, column=0, columnspan=3, sticky=W)
         self.l_entry.grid(row=2, column=4, columnspan=1, sticky=E)
         self.u_label.grid(row=3, column=0, columnspan=3, sticky=W)
@@ -80,8 +80,8 @@ class ErlangC:
         
     def update(self, method):
         if method == "calculate":
-            self.epsilon = float(self.epsilon.get())
-            self.alpha = float(self.alpha.get())
+            self.epsilon = float(self.epsilon_entry.get())
+            self.alpha = float(self.alpha_entry.get())
             self.l = float(self.l_entry.get())
             self.u = float(self.u_entry.get())
 

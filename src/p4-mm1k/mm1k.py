@@ -2,7 +2,7 @@
 def mm1k(_lambda, capacity, mu):
     utilization = -1
     EN = -1
-    if(_lambda > 0 and mu > 0 and _lambda < mu and capacity > 0): 
+    if(_lambda > 0 and mu > 0 and capacity > 0): 
         C = capacity
         coef =[]
         for i in range(int(C)):
