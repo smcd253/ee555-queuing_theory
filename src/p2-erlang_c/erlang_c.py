@@ -26,22 +26,29 @@ def erlang_c(l, u, epsilon, alpha):
         ew_cond = sys.float_info.max 
         series = [c]
 
-        while (pw > epsilon or ew_cond > alpha):
+        while (pw > epsilon and ew_cond > alpha):
+            # iterate c
             c += 1
+
+            rho = float(l/(c*u))
+            # catch cases where rho >= 1
+            if (rho >= 1):
+                series.append(c)
+                continue
 
             # calculate a
             a = 0.0
-
-            # sum from 0 to c - 1
+            # sum from 0 to c - 1 (new c has not been appended to series yet)
             for k in series:
                 a += float(math.pow(l/u, k) * (1/math.factorial(k)))
+
             #calculate b
             term1 = float(math.pow(l/u, c) * (1/math.factorial(c)))
-            rho = float(l/(c*u))
             term2 = float(1.0 - rho)
             b = float(term1 / term2)
+
             # calcualte p0
-            p0 = float((math.sqrt(abs(math.pow(a, 2) + 4*b) - a)) / 2*b)
+            p0 = float((math.pow(a, 2) + 4*b - a) / 2*b)
             # calculate pc
             pc = term1 * p0
             # recalculate pw
@@ -52,7 +59,7 @@ def erlang_c(l, u, epsilon, alpha):
 
             # append series at end of loop so a is sum from 0 to c - 1
             series.append(c) 
-            
+
         en = float(rho / (1 - rho))
         es = float(rho/l)
 
@@ -60,4 +67,5 @@ def erlang_c(l, u, epsilon, alpha):
     d['c'] = c
     d['es'] = es
     d['en'] = en
+
     return d

@@ -58,7 +58,7 @@ class ErlangC:
         self.es_text_label = Label(self.root, text="Expected Waiting Time:")
         self.es_result_label = Label(self.root, textvariable=self.es_result)
         self.en_text_label = Label(self.root, text="Expected Number Packets in System:")
-        self.en_result_label = Label(self.root, textvariable=self.es_result)
+        self.en_result_label = Label(self.root, textvariable=self.en_result)
 
         # Calculator Layout
         self.epsilon_label.grid(row=0, column=0, columnspan=3, sticky=W)
@@ -88,7 +88,7 @@ class ErlangC:
             result = erlang_c(self.l, self.u, self.epsilon, self.alpha)
             self.num_servers = result['c']
             self.es = result['es']
-            self.en = result['es']
+            self.en = result['en']
             self.num_servers_result.set(self.num_servers)
             self.es_result.set(self.es)
             self.en_result.set(self.en)
