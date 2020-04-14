@@ -26,7 +26,7 @@ def erlang_c(l, u, epsilon, alpha):
         ew_cond = sys.float_info.max 
         series = [c]
 
-        while (pw > epsilon and ew_cond > alpha):
+        while (pw > epsilon or ew_cond > alpha):
             # iterate c
             c += 1
 
