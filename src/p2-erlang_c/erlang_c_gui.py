@@ -21,8 +21,9 @@ class ErlangC:
 
         # member variables
         self.num_servers = 0    # result: number of servers
-        self.es = 0.0           # result: expected waiting time
+        self.ew = 0.0           # result: expected waiting time
         self.en = 0.0           # result: expected number packets in system
+        self.ens = 0.0          # result: expected number of busy servers
         self.alpha = 0.0        # input: max waiting time
         self.epsilon = 0.0      # input: max probability waiting
         self.l = 0.0            # input: lambda
@@ -47,18 +48,22 @@ class ErlangC:
         # initialize result text field
         self.num_servers_result = IntVar()
         self.num_servers_result.set(self.num_servers)
-        self.es_result = DoubleVar()
-        self.es_result.set(self.es)
+        self.ew_result = DoubleVar()
+        self.ew_result.set(self.ew)
         self.en_result = DoubleVar()
         self.en_result.set(self.en)
+        self.ens_result = DoubleVar()
+        self.ens_result.set(self.en)
 
         # result text field labels
         self.num_servers_text_label = Label(self.root, text="Number of Servers Required:")
         self.num_servers_result_label = Label(self.root, textvariable=self.num_servers_result)
         self.es_text_label = Label(self.root, text="Expected Waiting Time:")
-        self.es_result_label = Label(self.root, textvariable=self.es_result)
+        self.ew_result_label = Label(self.root, textvariable=self.ew_result)
         self.en_text_label = Label(self.root, text="Expected Number Packets in System:")
         self.en_result_label = Label(self.root, textvariable=self.en_result)
+        self.ens_text_label = Label(self.root, text="Expected Number of Busy Servers:")
+        self.ens_result_label = Label(self.root, textvariable=self.ens_result)
 
         # Calculator Layout
         self.epsilon_label.grid(row=0, column=0, columnspan=3, sticky=W)
@@ -73,10 +78,12 @@ class ErlangC:
         self.num_servers_text_label.grid(row=5, column=0, sticky=W)
         self.num_servers_result_label.grid(row=5, column=3, columnspan=2, sticky=E)
         self.es_text_label.grid(row=6, column=0, sticky=W)
-        self.es_result_label.grid(row=6, column=3, columnspan=2, sticky=E)
+        self.ew_result_label.grid(row=6, column=3, columnspan=2, sticky=E)
         self.en_text_label.grid(row=7, column=0, sticky=W)
         self.en_result_label.grid(row=7, column=3, columnspan=2, sticky=E)
-        self.main_menu_button.grid(row=8, column=0)
+        self.ens_text_label.grid(row=8, column=0, sticky=W)
+        self.ens_result_label.grid(row=8, column=3, columnspan=2, sticky=E)
+        self.main_menu_button.grid(row=9, column=0)
         
     def update(self, method):
         if method == "calculate":
@@ -87,11 +94,13 @@ class ErlangC:
 
             result = erlang_c(self.l, self.u, self.epsilon, self.alpha)
             self.num_servers = result['c']
-            self.es = result['es']
+            self.ew = result['ew']
             self.en = result['en']
+            self.ens = result['ens']
             self.num_servers_result.set(self.num_servers)
-            self.es_result.set(self.es)
+            self.ew_result.set(self.ew)
             self.en_result.set(self.en)
+            self.ens_result.set(self.ens)
             
             self.write_to_excel()
 
@@ -110,7 +119,7 @@ class ErlangC:
         data = [
             ["Inputs", "Values", "Results", "Values"],
             ["Max P(wait)", str(self.epsilon),"Number of Servers", str(self.num_servers)],
-            ["Max E(w)", str(self.alpha), "E(S)", str(self.es)],
+            ["Max E(w)", str(self.alpha), "E(S)", str(self.ew)],
             ["Arrival Rate", str(self.l),"E(N)", str(self.en)],
             ["Service Rate",str(self.u),"", ""]
         ]

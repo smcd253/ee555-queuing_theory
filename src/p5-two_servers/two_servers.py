@@ -6,8 +6,7 @@ def two_servers(l, u1, u2):
     utilization = -1
     p_idle = -1
 
-    # if l < u1 and u1 > u2:
-    if u1 > u2:
+    if l < u1 + u2 and u1 > u2:
         # calculate p(0,0)
         a = float(l/(2*((u1*u2)/l)))
         inf_geo_sum = float((l/(u1+u2))/(1-(l/(u1+u2))))
@@ -17,7 +16,12 @@ def two_servers(l, u1, u2):
         utilization = 1 - p00
         p_idle = p00
 
+    elif l > u1 + u2:
+        utilization = 1
+        p_idle = 0
+
     d = dict()
     d['utilization'] = utilization
     d['p_idle'] = p_idle
+    
     return d
