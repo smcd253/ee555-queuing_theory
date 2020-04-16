@@ -5,7 +5,8 @@ import math         # factorial
 # import main menu
 import sys
 sys.path.insert(1, 'src/p1-erlang_b/') 
-sys.path.insert(1, 'src/p2-erlang_c/') 
+sys.path.insert(1, 'src/p2-erlang_c_prob/') 
+sys.path.insert(1, 'src/p2-erlang_c_time/') 
 sys.path.insert(1, 'src/p3-cyclic/') 
 sys.path.insert(1, 'src/p4-mm1k/') 
 sys.path.insert(1, 'src/p5-two_servers/') 
@@ -21,14 +22,16 @@ class MainMenu:
 
         # menu option buttons
         self.erlang_b = Button(self.root, text="Erlang-B", command=lambda: self.update("Erlang-B"))
-        self.erlang_c = Button(self.root, text="Erlang-C", command=lambda: self.update("Erlang-C"))
+        self.erlang_c_prob = Button(self.root, text="Erlang-C P", command=lambda: self.update("Erlang-C P"))
+        self.erlang_c_time = Button(self.root, text="Erlang-C T", command=lambda: self.update("Erlang-C T"))
         self.cylcic = Button(self.root, text="Cyclic", command=lambda: self.update("Cyclic"))
         self.mm1k = Button(self.root, text="MM1K", command=lambda: self.update("MM1K"))
         self.two_servers = Button(self.root, text="Two Servers", command=lambda: self.update("TwoServers"))
 
         # menu Layout
         self.erlang_b.grid(row=3, column=0)
-        self.erlang_c.grid(row=3, column=1)
+        self.erlang_c_prob.grid(row=3, column=1)
+        self.erlang_c_time.grid(row=4, column=1)
         self.cylcic.grid(row=3, column=2)
         self.mm1k.grid(row=3, column=4)
         self.two_servers.grid(row=3, column=5)
@@ -40,10 +43,16 @@ class MainMenu:
             erlang_menu = ErlangB(self.f_path)
             erlang_menu.root.mainloop()
 
-        elif method == "Erlang-C":
+        elif method == "Erlang-C P":
             self.root.destroy()
-            from erlang_c_gui import ErlangC
-            erlang_c_menu = ErlangC(self.f_path)
+            from erlang_c_prob_gui import ErlangCP
+            erlang_c_menu = ErlangCP(self.f_path)
+            erlang_c_menu.root.mainloop()
+        
+        elif method == "Erlang-C T":
+            self.root.destroy()
+            from erlang_c_time_gui import ErlangCT
+            erlang_c_menu = ErlangCT(self.f_path)
             erlang_c_menu.root.mainloop()
 
         elif method == "Cyclic":
@@ -67,6 +76,7 @@ class MainMenu:
 def main():
     excel_path = sys.argv[1]
     m_menu = MainMenu(excel_path)
+    m_menu.root.geometry("500x500")
     m_menu.root.mainloop()
 
 if __name__ == '__main__':

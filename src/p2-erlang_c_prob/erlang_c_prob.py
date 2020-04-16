@@ -15,20 +15,20 @@
 import sys
 import math         # factorial, pow
 
-def erlang_c(l, u, epsilon, alpha):
+def erlang_c_prob(l, u, epsilon):
     c = -1
     ew = -1
     en = -1
     ens = -1
 
-    if(epsilon > 0 and epsilon <= 1 and alpha > 0 and l > 0 and u > 0):
+    if(epsilon > 0 and epsilon <= 1 and l > 0 and u > 0):
         # solve for number of servers needed (estimate pb)
         c = 0
         pw = 1.0
         ew_cond = sys.float_info.max 
         series = [c]
 
-        while (pw > epsilon or ew_cond > alpha):
+        while (pw > epsilon):
             # iterate c
             c += 1
 
@@ -58,16 +58,15 @@ def erlang_c(l, u, epsilon, alpha):
             # recalculate pw
             pw = float(pc / term2)
 
-            # recaculate ew_cond | w > o = ew_cond / pw
-            ew_cond = float(pc * rho / math.pow(1.0 - rho, 2)) / (l*rho) 
-
             # append series at end of loop so a is sum from 0 to c - 1
             series.append(c) 
 
-        en = float(rho / (1 - rho))
+        enw = float(pc * rho / math.pow(1.0 - rho, 2))
+        ew_cond = enw / (l*rho) 
         ew = float(ew_cond*rho)
         ens = float(l/u)
-        print("ens = ", ens)
+        en = float(ens + enw)
+
 
     d = dict()
     d['c'] = c

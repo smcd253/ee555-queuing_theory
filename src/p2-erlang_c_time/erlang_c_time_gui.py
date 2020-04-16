@@ -8,9 +8,9 @@ from openpyxl import *
 import sys
 sys.path.insert(1, '../..') 
 
-from erlang_c import erlang_c
+from erlang_c_time import erlang_c_time
 
-class ErlangC:
+class ErlangCT:
 
     def __init__(self, f_path):
         self.root = Tk()
@@ -25,18 +25,15 @@ class ErlangC:
         self.en = 0.0           # result: expected number packets in system
         self.ens = 0.0          # result: expected number of busy servers
         self.alpha = 0.0        # input: max waiting time
-        self.epsilon = 0.0      # input: max probability waiting
         self.l = 0.0            # input: lambda
         self.u = 0.0            # input: mu
 
         # text fields and validation for each variable
-        self.epsilon_entry = Entry(self.root)
         self.alpha_entry = Entry(self.root)
         self.l_entry = Entry(self.root)
         self.u_entry = Entry(self.root)
 
         # text field labels
-        self.epsilon_label = Label(self.root, text="Probability of Waiting Should Not Exceed: ")
         self.alpha_label = Label(self.root, text="Waiting Time Should Not Exceed: ")
         self.l_label = Label(self.root, text="Desired Arrival Rate (lambda): ")
         self.u_label = Label(self.root, text="Desired Service Rate (mu): ")
@@ -66,8 +63,6 @@ class ErlangC:
         self.ens_result_label = Label(self.root, textvariable=self.ens_result)
 
         # Calculator Layout
-        self.epsilon_label.grid(row=0, column=0, columnspan=3, sticky=W)
-        self.epsilon_entry.grid(row=0, column=4, columnspan=1, sticky=E)
         self.alpha_label.grid(row=1, column=0, columnspan=3, sticky=W)
         self.alpha_entry.grid(row=1, column=4, columnspan=1, sticky=E)
         self.l_label.grid(row=2, column=0, columnspan=3, sticky=W)
@@ -87,12 +82,11 @@ class ErlangC:
         
     def update(self, method):
         if method == "calculate":
-            self.epsilon = float(self.epsilon_entry.get())
             self.alpha = float(self.alpha_entry.get())
             self.l = float(self.l_entry.get())
             self.u = float(self.u_entry.get())
 
-            result = erlang_c(self.l, self.u, self.epsilon, self.alpha)
+            result = erlang_c_time(self.l, self.u, self.alpha)
             self.num_servers = result['c']
             self.ew = result['ew']
             self.en = result['en']
@@ -118,7 +112,7 @@ class ErlangC:
         ws = wb["Part 2"]
         data = [
             ["Inputs", "Values", "Results", "Values"],
-            ["Max P(wait)", str(self.epsilon),"Number of Servers", str(self.num_servers)],
+            ["Max P(wait)", "","Number of Servers", str(self.num_servers)],
             ["Max E(w)", str(self.alpha), "E(S)", str(self.ew)],
             ["Arrival Rate", str(self.l),"E(N)", str(self.en)],
             ["Service Rate",str(self.u),"", ""]
@@ -136,7 +130,7 @@ class ErlangC:
 
 def main():
     excel_path = sys.argv[1]
-    erlang_c_menu = ErlangC(excel_path)
+    erlang_c_menu = ErlangCT(excel_path)
     erlang_c_menu.root.mainloop()
 
 if __name__ == '__main__':
